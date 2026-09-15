@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: modelguard-postgres
+    environment:
+      POSTGRES_DB: modelguard
+      POSTGRES_USER: modelguard
+      POSTGRES_PASSWORD: modelguard
+    ports:
+      - "5432:5432"
+    volumes:
+      - modelguard-pgdata:/var/lib/postgresql/data
+
+volumes:
+  modelguard-pgdata:

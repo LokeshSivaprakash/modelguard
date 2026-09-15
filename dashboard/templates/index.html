@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ModelGuard — AI Supply-Chain Risk Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>ModelGuard</h1>
+        <p class="tagline">AI/ML supply-chain risk — pickle RCE, provenance, and pipeline CVEs, correlated.</p>
+    </header>
+
+    <section class="stats">
+        <div class="stat"><span class="stat-value">{{ n_models }}</span><span class="stat-label">Models scanned</span></div>
+        <div class="stat critical"><span class="stat-value">{{ n_critical_findings }}</span><span class="stat-label">Critical/high pickle findings</span></div>
+        <div class="stat blocking"><span class="stat-value">{{ n_blocking }}</span><span class="stat-label">At/above CI gate threshold (7.0)</span></div>
+        <div class="stat known-bad"><span class="stat-value">{{ n_known_bad }}</span><span class="stat-label">Known-bad hash matches</span></div>
+    </section>
+
+    <section class="controls">
+        <a href="{{ url_for('index', show_resolved=1 if not show_resolved else 0, sort=sort) }}">
+            {{ "Hide resolved" if show_resolved else "Show resolved" }}
+        </a>
+        <a href="{{ url_for('index', sort='risk_score', show_resolved=1 if show_resolved else 0) }}">Sort by score</a>
+        <a href="{{ url_for('index', sort='model', show_resolved=1 if show_resolved else 0) }}">Sort by model</a>
+    </section>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Score</th>
+                <th>Model</th>
+                <th>Source</th>
+                <th>OWASP LLM</th>
+                <th>MITRE ATLAS</th>
+                <th>Reasoning</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for f in findings %}
+            <tr class="{{ 'critical' if f.risk_score >= 8 else 'warn' if f.risk_score >= 5 else '' }} {{ 'resolved' if f.resolved else '' }}">
+                <td class="score">{{ "%.1f"|format(f.risk_score) }}</td>
+                <td>{{ f.model_ref }}</td>
+                <td>{{ f.source }}</td>
+                <td>{{ f.owasp_llm_category }}</td>
+                <td>{{ f.mitre_atlas_technique }}</td>
+                <td class="reasoning">{{ f.reasoning }}</td>
+                <td>
+                    {% if not f.resolved %}
+                    <form method="post" action="{{ url_for('resolve', finding_id=f.id) }}">
+                        <button type="submit">Mark resolved</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="7">No findings yet. Run <code>cli.py correlate</code> after scanning a model.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

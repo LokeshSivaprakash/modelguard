@@ -1,0 +1,39 @@
+name: ModelGuard tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: modelguard_test
+          POSTGRES_USER: modelguard
+          POSTGRES_PASSWORD: modelguard
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      MODELGUARD_TEST_DSN: "dbname=modelguard_test user=modelguard password=modelguard host=localhost port=5432"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      # Runs both the fast unit tests (scoring, pickle scanner) and the DB
+      # integration tests (test_integration.py) -- the latter is what
+      # would have caught the ON DELETE SET NULL bug before it shipped.
+      - name: Run tests
+        run: pytest tests/ -v

@@ -1,0 +1,52 @@
+name: ModelGuard scan
+
+on:
+  pull_request:
+    paths:
+      - "models/**"
+  workflow_dispatch:
+
+jobs:
+  scan-model:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: modelguard
+          POSTGRES_USER: modelguard
+          POSTGRES_PASSWORD: modelguard
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      MODELGUARD_DB_DSN: "dbname=modelguard user=modelguard password=modelguard host=localhost port=5432"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - name: Init schema
+        run: python cli.py init-db
+
+      - name: Scan model files
+        run: python cli.py scan-model --model-ref "${{ github.repository }}" --path ./models --source local
+
+      - name: Check provenance
+        run: python cli.py check-provenance --model-ref "${{ github.repository }}" --source local
+
+      - name: Correlate
+        run: python cli.py correlate
+
+      # This is the enforcement point -- the same "fail the merge" pattern
+      # RiskWeave's Kyverno policy applies at admission time in a cluster.
+      - name: Gate on risk score
+        run: python ci/gate.py --model-ref "${{ github.repository }}" --threshold 7.0

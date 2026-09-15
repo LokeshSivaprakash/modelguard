@@ -1,0 +1,26 @@
+body { font-family: -apple-system, "Segoe UI", sans-serif; margin: 0; padding: 24px 32px; background: #0f1414; color: #dfe8e5; }
+header h1 { margin: 0; font-size: 22px; }
+header .tagline { color: #8aa39d; margin: 4px 0 20px; font-size: 14px; }
+
+.stats { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+.stat { background: #182020; border: 1px solid #2a3535; border-radius: 8px; padding: 12px 18px; min-width: 140px; }
+.stat-value { display: block; font-size: 26px; font-weight: 700; }
+.stat-label { display: block; font-size: 12px; color: #8aa39d; margin-top: 4px; }
+.stat.critical .stat-value { color: #e0776a; }
+.stat.blocking .stat-value { color: #e0b04a; }
+.stat.known-bad .stat-value { color: #e0776a; }
+
+.controls { margin-bottom: 14px; display: flex; gap: 16px; }
+.controls a { color: #58baae; text-decoration: none; font-size: 13px; }
+.controls a:hover { text-decoration: underline; }
+
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+th { text-align: left; padding: 8px 10px; border-bottom: 2px solid #2a3535; color: #8aa39d; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; font-size: 11px; }
+td { padding: 8px 10px; border-bottom: 1px solid #202a2a; vertical-align: top; }
+tr.critical .score { color: #e0776a; font-weight: 700; }
+tr.warn .score { color: #e0b04a; font-weight: 700; }
+tr.resolved { opacity: 0.45; }
+td.reasoning { max-width: 420px; }
+button { background: #1c3634; color: #a9e6dc; border: 1px solid #2f5f5a; border-radius: 5px; padding: 4px 10px; cursor: pointer; font-size: 12px; }
+button:hover { background: #244341; }
+code { background: #1c2626; padding: 1px 5px; border-radius: 3px; }

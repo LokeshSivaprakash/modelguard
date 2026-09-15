@@ -1,0 +1,5 @@
+{
+  "_comment": "Seed trust registry. trusted_publishers are HF org/user names your team has already vetted -- start empty and add deliberately, don't pre-populate with big names just to make demo output look cleaner than it is. known_bad_hashes is a local deny-list (sha256) for artifacts your team has already confirmed malicious.",
+  "trusted_publishers": [],
+  "known_bad_hashes": []
+}

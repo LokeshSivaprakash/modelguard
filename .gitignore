@@ -1,0 +1,11 @@
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+demo/fixtures/*.pt
+demo/fixtures/*.pkl
+*.egg-info/
+.venv/
+venv/
+demo/fixtures/
+*.aibom.json

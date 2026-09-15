@@ -1,0 +1,10 @@
+# Minimum versions rather than exact pins, matching RiskWeave's convention,
+# so prebuilt wheels resolve on newer Python releases without a local compiler.
+psycopg2-binary>=2.9.10
+python-dotenv>=1.0.1
+click>=8.1.7
+requests>=2.32.3
+openai>=1.51.0
+rich>=13.9.2
+pytest>=8.3.3
+flask>=3.0.3
