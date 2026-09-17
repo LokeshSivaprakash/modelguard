@@ -160,10 +160,10 @@ correlation logic, not the frontend.
 ![ModelGuard dashboard](docs/screenshots/dashboard.png)
 
 **CI gate blocking a malicious model**
-![CI gate blocked](docs/screenshots/ci-gate-blocked.png)
+![CI gate blocked](docs/screenshots/modelguard-03-ci-gate-block.png)
 
 **Test suite**
-![Tests passing](docs/screenshots/tests-passing.png)
+![Tests passing](docs/screenshots/modelguard-01-tests.png)
 
 ## Roadmap
 
