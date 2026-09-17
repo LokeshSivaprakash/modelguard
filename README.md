@@ -154,6 +154,17 @@ correlation logic, not the frontend.
 - Pipeline CVE correlation is scoped globally, not per-deployment, until a
   model→pipeline mapping table exists (see roadmap).
 
+## Screenshots
+
+**Dashboard**
+![ModelGuard dashboard](docs/screenshots/dashboard.png)
+
+**CI gate blocking a malicious model**
+![CI gate blocked](docs/screenshots/ci-gate-blocked.png)
+
+**Test suite**
+![Tests passing](docs/screenshots/tests-passing.png)
+
 ## Roadmap
 
 - [x] Schema for the AI supply-chain graph
